@@ -24,18 +24,18 @@ b10 = (result2 % 10)
 reality = 0
 
 if b10 == nIDN[9]:
-  reality = (reality + 1)
+  reality+=1
 
 b11 = (nIDN[0] + nIDN[1] + nIDN[2] + nIDN[3] + nIDN[4] + nIDN[5] + nIDN[6] + nIDN[7] + nIDN[8] + nIDN[9]) % 10
 
 if b11 == nIDN[10]:
-  reality = (reality + 1)
+  reality+=1
 
 if nIDN[0] != 0:
-  reality = (reality + 1)
+  reality+=1
 
 if len(nIDN) == 11:
-  reality = (reality + 1)
+  reality+=1
 
 nIDN_Truth = 0
 for j in nIDN:
@@ -43,9 +43,9 @@ for j in nIDN:
     nIDN_Truth+=1
 
 if nIDN_Truth == 11:
-  reality = (reality + 1)
+  reality+=1
 if nIDN[10] % 2 == 0:
-  reality = (reality + 1)
+  reality+=1
 
 if reality == 6:
   print("TC Kimlik Doğrulama Başarılı.")
