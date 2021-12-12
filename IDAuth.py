@@ -7,55 +7,42 @@
 *******************************************
 '''
 
-idn = int(input("TC Kimlik Numaranızı Giriniz: "))
-nIDN = []
-idn = str(idn)
-numbers = "1234567890"
-nNUMS = []
-for i in numbers:
-  nNUMS.append(i)
+idn = False
+rule = """
+1- TCKN 11 Haneden Oluşmalıdır.
 
-for i in idn:
-  nIDN.append(int(i))
+2- TCKN '0' İle Başlamamalıdır.
 
-result1 = (nIDN[0] + nIDN[2] + nIDN[4] + nIDN[6] + nIDN[8]) * 7
-result2 = result1 - (nIDN[1] + nIDN[3] + nIDN[5] + nIDN[7])
-b10 = (result2 % 10)
-reality = 0
+3- TCKN Tamamen Sayılardan Oluşmalıdır.
 
-if b10 == nIDN[9]:
-  reality+=1
+4- TCKN 10. Basamağı 1,3,5,7,9 basamakların toplamının 7 ile çarpımından, 2,4,6,8 basamakların toplamını çıkarıp, 10 sayısına bölümünden kalanı alarak bulunur. (MOD10)
 
-b11 = (nIDN[0] + nIDN[1] + nIDN[2] + nIDN[3] + nIDN[4] + nIDN[5] + nIDN[6] + nIDN[7] + nIDN[8] + nIDN[9]) % 10
+5- TCKN 11. Basamağı, 1,2,3,4,5,6,7,8,9,10. basamakların toplamının 10 sayısına bölümünden kalanı alarak bulunur. (MOD10)
 
-if b11 == nIDN[10]:
-  reality+=1
+6- TCKN Son Basamağı Çift Sayı Olmalıdır.
+"""
 
-if nIDN[0] != 0:
-  reality+=1
+try:
+    name = input("İsminiz: ")
+    idn = int(input("TC Kimlik Numaranızı Giriniz: "))
+    str_idn = str(idn)
+    cx = sum([int(letter) for letter in str_idn][0:9:2]) * 7 # (1 + 3 + 5 + 7 + 9) * 7
+    cy = (cx - (sum([int(letter) for letter in str_idn][1:8:2]))) % 10 # CX - (IDN[2,4,6,8]) % 10
+except:
+    pass
 
-if len(nIDN) == 11:
-  reality+=1
 
-nIDN_Truth = 0
-for j in nIDN:
-  if str(j) in nNUMS:
-    nIDN_Truth+=1
 
-if nIDN_Truth == 11:
-  reality+=1
-if nIDN[10] % 2 == 0:
-  reality+=1
 
-if reality == 6:
-  print("TC Kimlik Doğrulama Başarılı.")
-elif nIDN[10] % 2 != 0:
-  print("TC Kimlik Numarası Tek Sayı İle Bitemez.")
-elif(len(nIDN) != 11):
-  print("TC Kimlik Numarası 11 Rakamdan Oluşmalıdır.")
-elif(nIDN_Truth != 11):
-  print("TC Kimlik numarasının Tüm Karakterleri Pozitif Tam Sayı Olmalıdır.")
+if idn:
+    if len(str_idn) == 11 and not str_idn.startswith("0") and str_idn.isdigit():
+        if int(str_idn[9]) == cy:
+            cz = sum([int(s) for s in str_idn][0:10:1]) % 10
+            if int(str_idn[10]) == cz and int(str_idn[10]) % 2 == 0:
+                # Doğrulandığında bir bildirim veriyoruz.
+                print(f'Merhaba, {name}! Girmiş olduğunuz {str_idn} kimlik numarası için TC Kimlik Doğrulama Başarılı!')
+    else:
+        print(rule)
 else:
-  print("TC Kimlik Doğrulama Başarısız.")
-
-# the end
+    # 11 haneli mi diye kontrol edelim!
+    raise Exception("\n11 haneden oluşan bir sayı girdiğinizden emin olup tekrar deneyin.")
